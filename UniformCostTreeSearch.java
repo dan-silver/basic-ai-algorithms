@@ -5,17 +5,19 @@ import java.util.*;
 /**
  * Created by dan on 9/14/15.
  */
-public class UniformCostTreeSearch {
+public class UniformCostTreeSearch extends SearchAlgorithm{
     Integer[][] costs;
+
     UniformCostTreeSearch(Integer[][] costs) {
         this.costs = costs;
+        this.algorithmName = "Uniform Cost Tree Search";
     }
 
     private int stepCost(Node from, int problem, Node to) {
         return costs[from.index][to.index];
     }
 
-    public Node treeSearch(int startingIndex, int problem, ArrayList<Integer> orderOfExpansion) {
+    public Node searchMain(int startingIndex, int problem, ArrayList<Integer> orderOfExpansion) {
         ArrayList<Node> explored = new ArrayList<Node>(){}; //starts empty
 
         NodeSortCost sorter = new NodeSortCost();
@@ -27,7 +29,7 @@ public class UniformCostTreeSearch {
         fringe.offer(startingNode);
         while (true) {
             if (fringe.size() == 0)
-                return null; //indicates failure to find a solution
+                return null; //indicates FAILURE to find a SOLUTION
             Node node = fringe.poll(); //get the highest priority Node
 
             if (goalTest(problem, node)) {
@@ -40,10 +42,10 @@ public class UniformCostTreeSearch {
             for (Node n : expandedNodes) {
                 //add the node to the fringe if it's not already in the fringe or has been explored
                 // this part is adapted from page 84 of the textbook
-                if (nodeIsInListBasedOnIndex(explored, n) == null && nodeIsInListBasedOnIndex(fringe, n) == null) {
+                if (Node.isInListBasedOnIndex(explored, n) == null && Node.isInListBasedOnIndex(fringe, n) == null) {
                     fringe.add(n);
                 } else {
-                    Node existingNode = nodeIsInListBasedOnIndex(fringe, n);
+                    Node existingNode = Node.isInListBasedOnIndex(fringe, n);
                     if (existingNode == null) continue;
                     if (existingNode.pathCost > n.pathCost) {
                         //replace existing node with n (the current node in the expansion)
@@ -83,18 +85,5 @@ public class UniformCostTreeSearch {
             successors.add(successor);
         }
         return successors;
-    }
-
-    private boolean goalTest(int problem, Node node) {
-        return node.index == problem;
-    }
-
-    private Node nodeIsInListBasedOnIndex(AbstractCollection<Node> list, Node n) {
-        for (Node listNode : list) {
-            if (listNode.index == n.index) //compare based on the indices (same rows in the input file)
-                return listNode;
-        }
-
-        return null; //node is not in the list
     }
 }

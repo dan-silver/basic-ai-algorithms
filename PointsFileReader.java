@@ -12,7 +12,7 @@ public class PointsFileReader extends fileReader {
     PointsFileReader(String filename) {
         super(filename);
         points = new ArrayList<>();
-        this.processFile();
+        processFile();
     }
 
     @Override
@@ -20,7 +20,9 @@ public class PointsFileReader extends fileReader {
         Scanner s = new Scanner(line);
         int x = s.nextInt();
         int y = s.nextInt();
-        points.add(new Point(x, y));
+        Point p = new Point(x, y);
+        p.index = lineNumber;
+        points.add(p);
     }
 
     public ArrayList<Point> getPoints() {

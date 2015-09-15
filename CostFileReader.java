@@ -26,7 +26,7 @@ public class CostFileReader extends fileReader {
             Integer cost = s.nextInt();
 
             // -100 is a null value, which means the points are not connected
-            if (cost == -100)
+            if (cost == 100)
                 cost = null;
 
             costs[lineNumber][col] = cost;
